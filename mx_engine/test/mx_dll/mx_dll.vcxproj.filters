@@ -18,9 +18,15 @@
     <ClInclude Include="mx_dll.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cjson\cJSON.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mx_dll.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cjson\cJSON.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
