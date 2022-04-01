@@ -24,7 +24,8 @@ public class ViewData : MonoBehaviour
         var res = set_data("F://yy//unity (2)//unity//Data");
         Debug.Log("init result = " + res.ToString());
 
-        // 
+        //
+        StartCoroutine(generate_cube(structArray));
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -37,13 +38,30 @@ public class ViewData : MonoBehaviour
     };
 
 
+    IEnumerator generate_cube(point_from_nds[] array)
+    {
+        foreach (var item in array)
+        {
+            GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube1.transform.position = new Vector3(item.x, 0, item.y);
+
+            var scale = 0.0005f/5;
+            cube1.transform.localScale = new Vector3(scale, scale/2, scale);
+            //cube1.transform.SetParent(this.transform);
+           
+            yield return null;
+        }
+
+    }
+
+    static point_from_nds[] structArray;
     [AOT.MonoPInvokeCallback(typeof(RenderDataCallbackFunc))]
     public static void onCallBack(IntPtr intPtr, int n)
     {
         Debug.Log("come into callback point cnt= " + n.ToString());
 
         var size = Marshal.SizeOf(typeof(point_from_nds));
-        point_from_nds[] structArray = new point_from_nds[n];
+        structArray = new point_from_nds[n];
 
         for (int index = 0; index < n; index++)
         {
@@ -52,13 +70,13 @@ public class ViewData : MonoBehaviour
         }
 
         // 由于mx_dll中封装的逻辑是不释放，所以在此释放数组
-        Marshal.FreeHGlobal(intPtr);
-        // structArray 里存储了点       
+        //Marshal.FreeHGlobal(intPtr);
+        // structArray 里存储了点      
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }
