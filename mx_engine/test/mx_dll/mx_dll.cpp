@@ -40,8 +40,12 @@ struct coordinate
 	float y;
 };
 
+RenderDataCallback _myCallback;
 extern "C"
 {
+	void set_renderdata_callback(RenderDataCallback callback) {
+		_myCallback = callback;
+	}
 
 	MY_DLL_API int set_data(char* data_path)
 	{
@@ -148,6 +152,10 @@ extern "C"
 				}
 
 				std::cout << "point cnt: " << cnt << std::endl;
+				if (_myCallback)
+				{
+					_myCallback(shapes, cnt);
+				}
 			}
 		}
 
