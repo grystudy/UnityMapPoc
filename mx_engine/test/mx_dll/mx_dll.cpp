@@ -8,6 +8,8 @@
 
 #include<vector>
 
+#include "../test/test.h"
+
 //[DllImport("nds_ds")]
 //extern static int db_parser_init(string db_root_path, string log_path, string citycode);
 //[DllImport("nds_ds")]
@@ -38,6 +40,51 @@ struct coordinate
 {
 	float x;
 	float y;
+};
+
+struct mesh
+{
+	Vector3* vertices;
+	int vertices_cnt;
+
+	int* indexes;
+	int index_cnt;
+
+	mesh()
+	{
+		vertices = new Vector3[250]();
+		vertices_cnt = 250;
+
+		//memset(vertices, 1, sizeof(Vector3) * vertices_cnt);
+
+		for (int i = 0; i < vertices_cnt; ++i)
+		{
+			auto& a = vertices[i];
+			a.x = 1;
+			a.y = 2;
+			a.z = 3;
+		}
+
+		indexes = new int[750]();
+		index_cnt = 750;
+		memset(indexes, 10, sizeof(int) * index_cnt);
+	}
+};
+
+struct background
+{
+	mesh* green;
+	int gnreen_cnt;
+
+	mesh* water;
+	int water_cnt;
+};
+
+struct tile
+{
+	Vector2 coor;
+	background a;
+	background b;
 };
 
 RenderDataCallback _myCallback;
@@ -107,8 +154,8 @@ extern "C"
 							}
 											],*/
 
-				/*thread_local std::vector<coordinate> shapes;
-				shapes.clear();*/
+											/*thread_local std::vector<coordinate> shapes;
+											shapes.clear();*/
 
 				cJSON* root = cJSON_Parse((const char*)data);
 				if (!root)
@@ -155,6 +202,33 @@ extern "C"
 				if (_myCallback)
 				{
 					_myCallback(shapes, cnt);
+				}
+			}
+
+			{
+				Vector2 v2 = { 1,11 };
+				Vector3 v3 = { 250.0f,251.0f,252.0f };
+
+				tile* t11 = new tile();
+				tile& t1 = *t11;
+				t1.coor = v2;
+
+				auto cnt = 100;
+				t1.a.green = new mesh[cnt]();
+				t1.a.gnreen_cnt = cnt;
+
+				t1.a.water = new mesh[cnt]();
+				t1.a.water_cnt = cnt;
+
+
+				t1.b.green = new mesh[cnt]();
+				t1.b.gnreen_cnt = cnt;
+
+				t1.b.water = new mesh[cnt]();
+				t1.b.water_cnt = cnt;
+				if (_myCallback)
+				{
+					_myCallback(t11, 0xffffffff);
 				}
 			}
 		}

@@ -13,6 +13,11 @@ struct foo_bar
 
 void RenderDataCallback_Imp(void* data_ptr, int cnt)
 {
+	if (cnt = 0xffffffff)
+	{
+
+		return;
+	}
 	std::cout << "point count from callback " << cnt;
 	std::vector<foo_bar> array;
 	foo_bar* ptr =(foo_bar*)data_ptr;
